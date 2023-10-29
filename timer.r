@@ -1,22 +1,12 @@
 # ----------------------
 # BAN400 - Assignment 8  
-# Timer File
+# Timer File 
 # ----------------------
 
 # Loading packages
 library(tictoc)
-library(dplyr)
+library(tidyverse)
 
-# Creating a function to time measure run time of a file
-time_func <- 
-  function(file, name) {
-    tic.clearlog()
-    tic("Regular loop")
-    # Run sol1
-    toc(log = TRUE)
-    printTicTocLog() %>% 
-    knitr::kable()
-  }
 
 # Creating a function for printing out timer logs in a data frame.
 printTicTocLog <-
@@ -37,18 +27,26 @@ printTicTocLog <-
 
 tic.clearlog()
 
-tic('Unchanged Solution')
+tic('Method 1')
 source("scripts/sol1.R")
-toc()
+toc(log = TRUE)
 
-tic('Parallel Computing')
+tic('Method 2')
 source('scripts/sol2.R')
-toc()
+toc(log = TRUE)
 
-tic('Multi Core')
+tic('Method 3')
 source('scripts/sol3.R')
-toc()
+toc(log = TRUE)
 
-printTicTocLog() %>% 
+printTicTocLog() %>%
   knitr::kable()
+
+
+# Method 3 is clearly the fastest solution. The reason why method 3 is faster 
+# than method 2 seems to be that the MTweedieTest function is more
+# computationally diffictult than the final for-loop. There are significantly 
+# more steps that need to be computed sequentially in MTweedieTest, thus it 
+# benefits more from parallel computing.
+
 

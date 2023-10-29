@@ -23,7 +23,7 @@ MTweedieTests <-
   } 
 
 
-df <-  
+df2 <-  
   expand.grid( 
     N = c(10,100,1000,5000, 10000), 
     M = 1000, 
@@ -41,21 +41,20 @@ c1 <- makeCluster(Cores)
 # Register the cluster
 registerDoParallel(c1)
 
-foreach(
-  i = 1:nrow(df),
-  .combine = 'rbind',
-  .packages = c('magrittr', 'dplyr')
-) %dopar%
+df2 <-
+  foreach(
+    i = 1:nrow(df2),
+    .combine = 'rbind',
+    .packages = c('magrittr', 'dplyr', 'tweedie')
+  ) %dopar%
   tibble(
-    N = df$N[i]
-    M = df$M
-    
-  )
-  df$share_reject[i] <-  
-    MTweedieTests( 
-      N=df$N[i], 
-      M=df$M[i], 
-      sig=.05) 
+    N = df2$N[i],
+    M = df2$M[i],
+    share_reject =  
+      MTweedieTests( 
+        N=df2$N[i], 
+        M=df2$M[i], 
+        sig=.05) 
 ) 
 
 # Close of clusters
